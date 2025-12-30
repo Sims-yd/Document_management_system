@@ -10,23 +10,73 @@ const uploadDocument = async (req, res) => {
         }
 
         const { title, description, tags, category } = req.body;
-        // Cloudinary returns the URL in req.file.path
-        const publicUrl = req.file.path;
+        
+        // Extract metadata from Cloudinary upload
+        const publicUrl = req.file.secure_url || req.file.path;
+        const originalFilename = req.file.originalname || req.file.filename;
+        const fileFormat = req.file.format || originalFilename.split('.').pop();
+        
+        // ✅ FIXED: Determine resourceType based on fileFormat if not provided
+        let resourceType = req.file.resource_type;
+        if (!resourceType || resourceType === 'auto') {
+            const ext = fileFormat.toLowerCase();
+            const imageExts = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'svg'];
+            const videoExts = ['mp4', 'avi', 'mov', 'mkv', 'flv', 'wmv', 'webm'];
+            const documentExts = ['pdf', 'doc', 'docx', 'txt', 'xls', 'xlsx', 'ppt', 'pptx'];
+            
+            if (imageExts.includes(ext)) {
+                resourceType = 'image';
+            } else if (videoExts.includes(ext)) {
+                resourceType = 'video';
+            } else if (documentExts.includes(ext)) {
+                resourceType = 'raw';
+            } else {
+                resourceType = 'raw';
+            }
+        }
+        
+        // Default MIME types mapping
+        const mimeTypeMap = {
+            'pdf': 'application/pdf',
+            'doc': 'application/msword',
+            'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'xls': 'application/vnd.ms-excel',
+            'xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'jpg': 'image/jpeg',
+            'jpeg': 'image/jpeg',
+            'png': 'image/png',
+            'gif': 'image/gif',
+            'webp': 'image/webp',
+            'mp4': 'video/mp4',
+            'webm': 'video/webm',
+            'txt': 'text/plain',
+        };
+        
+        const mimeType = mimeTypeMap[fileFormat] || 'application/octet-stream';
+        
+        console.log('✅ Upload metadata:', { fileFormat, resourceType, mimeType, originalFilename });
 
         // Check for existing document with same title
         const existingDoc = await Document.findOne({ title });
 
         if (existingDoc) {
-            // Versioning logic
+            // Versioning logic - save current version to history
             existingDoc.history.push({
                 version: existingDoc.version,
                 fileUrl: existingDoc.fileUrl,
+                originalFilename: existingDoc.originalFilename,
+                fileFormat: existingDoc.fileFormat,
+                resourceType: existingDoc.resourceType,
                 updatedAt: existingDoc.updatedAt,
             });
             existingDoc.version += 1;
             existingDoc.fileUrl = publicUrl;
+            existingDoc.originalFilename = originalFilename;
+            existingDoc.fileFormat = fileFormat;
+            existingDoc.resourceType = resourceType;
+            existingDoc.mimeType = mimeType;
             existingDoc.description = description || existingDoc.description;
-            existingDoc.tags = tags ? tags.split(',') : existingDoc.tags;
+            existingDoc.tags = tags ? tags.split(',').map(t => t.trim()) : existingDoc.tags;
             existingDoc.category = category || existingDoc.category;
             existingDoc.uploadedBy = req.user._id;
 
@@ -37,14 +87,19 @@ const uploadDocument = async (req, res) => {
             const newDoc = await Document.create({
                 title,
                 description,
-                tags: tags ? tags.split(',') : [],
+                tags: tags ? tags.split(',').map(t => t.trim()) : [],
                 category,
                 fileUrl: publicUrl,
+                originalFilename: originalFilename,
+                fileFormat: fileFormat,
+                resourceType: resourceType,
+                mimeType: mimeType,
                 uploadedBy: req.user._id,
             });
             res.status(201).json(newDoc);
         }
     } catch (error) {
+        console.error('Upload error:', error);
         res.status(500).json({ message: error.message });
     }
 };

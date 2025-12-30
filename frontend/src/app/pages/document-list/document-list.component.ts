@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -15,7 +15,10 @@ export class DocumentListComponent implements OnInit {
     keyword: string = '';
     category: string = '';
 
-    constructor(private documentService: DocumentService) { }
+    constructor(
+        private documentService: DocumentService,
+        private cdr: ChangeDetectorRef
+    ) { }
 
     ngOnInit() {
         this.loadDocuments();
@@ -24,9 +27,14 @@ export class DocumentListComponent implements OnInit {
     loadDocuments() {
         this.documentService.getDocuments(this.keyword, this.category).subscribe({
             next: (docs) => {
+                console.log('Documents loaded:', docs);
                 this.documents = docs;
+                this.cdr.detectChanges();
             },
-            error: (err) => console.error(err)
+            error: (err) => {
+                console.error('Error loading documents:', err);
+                this.cdr.detectChanges();
+            }
         });
     }
 

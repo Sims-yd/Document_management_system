@@ -1,0 +1,43 @@
+<nav class="navbar navbar-expand-lg sticky-top" *ngIf="authService.isLoggedIn()">
+  <div class="container page-container py-0">
+    <a class="navbar-brand d-flex align-items-center gap-2" routerLink="/dashboard">
+      <i class="bi bi-grid-1x2-fill text-primary"></i>
+      <span>DocFlow</span>
+    </a>
+    
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-center gap-1 gap-lg-3">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">
+            <i class="bi bi-speedometer2 me-1"></i> Dashboard
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/documents" routerLinkActive="active">
+            <i class="bi bi-folder2-open me-1"></i> Documents
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/upload" routerLinkActive="active">
+            <i class="bi bi-cloud-upload me-1"></i> Upload
+          </a>
+        </li>
+        
+        <li class="nav-item ms-lg-3">
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle d-flex align-items-center gap-2" type="button" (click)="logout()">
+              <div class="avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 24px; height: 24px; font-size: 12px;">
+                <i class="bi bi-person-fill"></i>
+              </div>
+              <span>Logout</span>
+            </button>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

@@ -3,12 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
-    private apiUrl = 'http://localhost:5000/api/auth';
+    private apiUrl = `${environment.apiBaseUrl}/auth`;
     private currentUserSubject = new BehaviorSubject<any>(null);
     public currentUser$ = this.currentUserSubject.asObservable();
 
@@ -51,6 +52,10 @@ export class AuthService {
         );
     }
 
+    isLoggedIn(): boolean {
+        return !!this.currentUserSubject.value;
+    }
+
     private setSession(authResult: any) {
         localStorage.setItem('token', authResult.token);
         const decoded: any = jwtDecode(authResult.token);
@@ -65,10 +70,6 @@ export class AuthService {
 
     getToken(): string | null {
         return localStorage.getItem('token');
-    }
-
-    isLoggedIn(): boolean {
-        return !!this.getToken();
     }
 
     getUserRole(): string {

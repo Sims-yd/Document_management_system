@@ -15,7 +15,7 @@ export class DocumentUploadComponent {
     selectedFile: File | null = null;
     error: string = '';
     success: string = '';
-    isUploading: boolean = false;
+    loading: boolean = false;
 
     constructor(
         private fb: FormBuilder,
@@ -39,7 +39,7 @@ export class DocumentUploadComponent {
 
     onSubmit() {
         if (this.uploadForm.valid && this.selectedFile) {
-            this.isUploading = true;
+            this.loading = true;
             this.error = '';
             this.success = '';
 
@@ -53,7 +53,7 @@ export class DocumentUploadComponent {
             this.documentService.uploadDocument(formData).subscribe({
                 next: (res) => {
                     this.success = 'Document uploaded successfully!';
-                    this.isUploading = false;
+                    this.loading = false;
                     setTimeout(() => {
                         this.router.navigate(['/documents']);
                     }, 2000);
@@ -61,7 +61,7 @@ export class DocumentUploadComponent {
                 error: (err: any) => {
                     console.error('Upload error:', err);
                     this.error = err?.error?.message || err?.message || 'Upload failed';
-                    this.isUploading = false;
+                    this.loading = false;
                 }
             });
         } else {
