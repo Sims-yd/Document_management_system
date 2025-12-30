@@ -1,0 +1,56 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <div class="container">
+        <a class="navbar-brand" routerLink="/dashboard">DMS</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" routerLink="/dashboard">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/documents">Documents</a>
+                </li>
+                <li class="nav-item" *ngIf="['Editor', 'Admin'].includes(userRole)">
+                    <a class="nav-link" routerLink="/upload">Upload</a>
+                </li>
+            </ul>
+            <button class="btn btn-outline-light" (click)="logout()">Logout</button>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="jumbotron bg-light p-5 rounded mb-4">
+                <h1 class="display-4">Welcome to DMS</h1>
+                <p class="lead">Manage your documents efficiently and securely.</p>
+                <hr class="my-4">
+                <p>You are logged in as <strong>{{ userRole }}</strong>.</p>
+                <a class="btn btn-primary btn-lg" routerLink="/documents" role="button">View All Documents</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Recent Documents</h3>
+            <div class="list-group mt-3">
+                <a *ngFor="let doc of recentDocuments" [routerLink]="['/documents', doc._id]"
+                    class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">{{ doc.title }}</h5>
+                        <small>v{{ doc.version }}</small>
+                    </div>
+                    <p class="mb-1">{{ doc.description }}</p>
+                    <small>Uploaded by {{ doc.uploadedBy?.username }}</small>
+                </a>
+                <div *ngIf="recentDocuments.length === 0" class="alert alert-info">
+                    No documents found.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

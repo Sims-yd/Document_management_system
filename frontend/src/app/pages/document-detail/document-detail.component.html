@@ -1,0 +1,61 @@
+<!-- ERROR MESSAGE -->
+<div class="container mt-4" *ngIf="error">
+  <div class="alert alert-danger">{{ error }}</div>
+  <button class="btn btn-secondary" routerLink="/documents">Back to Documents</button>
+</div>
+
+<!-- DOCUMENT DETAILS -->
+<div class="container mt-4" *ngIf="document">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h3>{{ document.title }}</h3>
+    <button class="btn btn-secondary" routerLink="/documents">
+      Back
+    </button>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <p><strong>Description:</strong> {{ document.description }}</p>
+      <p><strong>Category:</strong> {{ document.category }}</p>
+      <p><strong>Version:</strong> {{ document.version }}</p>
+      <!-- Fixed: username instead of name -->
+      <p><strong>Uploaded By:</strong> {{ document.uploadedBy?.username }}</p>
+
+      <div class="mb-2">
+        <span class="badge bg-primary me-2" *ngFor="let tag of document.tags">
+          {{ tag }}
+        </span>
+      </div>
+
+      <a class="btn btn-success" [href]="document.fileUrl" target="_blank">
+        View / Download File
+      </a>
+
+      <button *ngIf="userRole === 'Admin'" class="btn btn-danger ms-3" (click)="deleteDocument()">
+        Delete
+      </button>
+    </div>
+  </div>
+
+  <!-- VERSION HISTORY -->
+  <div class="card">
+    <div class="card-header">
+      <strong>Version History</strong>
+    </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item" *ngFor="let h of history">
+        Version {{ h.version }} — {{ h.updatedAt | date:'medium' }}
+        <a [href]="h.fileUrl" target="_blank" class="btn btn-sm btn-outline-secondary ms-2">View</a>
+      </li>
+      <li class="list-group-item" *ngIf="history.length === 0">No history available.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- LOADING STATE -->
+<div class="container mt-4" *ngIf="!document && !error">
+  <div class="alert alert-info">
+    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+    Loading document...
+  </div>
+</div>
