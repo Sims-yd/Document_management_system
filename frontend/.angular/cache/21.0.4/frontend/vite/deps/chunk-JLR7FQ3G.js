@@ -4,7 +4,7 @@ import {
   Subject,
   Subscription,
   map
-} from "./chunk-DMY7NSOM.js";
+} from "./chunk-MARUHEWW.js";
 import {
   __spreadProps,
   __spreadValues
@@ -15800,6 +15800,14 @@ function setImmediateTriggers(injector, elementTriggers) {
     triggerHydrationFromBlockName(injector, elementTrigger.blockName);
   }
 }
+var _hmrWarningProduced = false;
+function logHmrWarning(injector) {
+  if (!_hmrWarningProduced) {
+    _hmrWarningProduced = true;
+    const console2 = injector.get(Console);
+    console2.log(formatRuntimeError(-751, "Angular has detected that this application contains `@defer` blocks and the hot module replacement (HMR) mode is enabled. All `@defer` block dependencies will be loaded eagerly."));
+  }
+}
 function ɵɵdefer(index, primaryTmplIndex, dependencyResolverFn, loadingTmplIndex, placeholderTmplIndex, errorTmplIndex, loadingConfigIndex, placeholderConfigIndex, enableTimerScheduling, flags) {
   const lView = getLView();
   const tView = getTView();
@@ -15810,7 +15818,7 @@ function ɵɵdefer(index, primaryTmplIndex, dependencyResolverFn, loadingTmplInd
   if (tView.firstCreatePass) {
     performanceMarkFeature("NgDefer");
     if (ngDevMode) {
-      if (false) {
+      if (true) {
         logHmrWarning(injector);
       }
       if (hasHydrateTriggers(flags) && !incrementalHydrationEnabled) {
@@ -26398,4 +26406,4 @@ export {
   RESPONSE_INIT,
   REQUEST_CONTEXT
 };
-//# sourceMappingURL=chunk-WJZUX3OH.js.map
+//# sourceMappingURL=chunk-JLR7FQ3G.js.map

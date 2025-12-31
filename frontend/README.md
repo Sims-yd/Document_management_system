@@ -1,59 +1,179 @@
-# Frontend
+# 📄 Document Management System (DMS)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.4.
+## 📌 Project Overview
+The **Document Management System (DMS)** is a full-stack web application developed using the **MEAN stack**.  
+It enables secure document handling with **role-based access control**, **cloud-based file storage**, and **document versioning**.
 
-## Development server
+The system allows users to upload, view, search, update, and manage documents through an Angular-based dashboard, following real-world industry practices.
 
-To start a local development server, run:
+---
 
+## 🎯 Features
+- 🔐 JWT-based Authentication
+- 👥 Role-Based Access Control
+  - **Admin**: Upload, view, delete documents
+  - **Editor**: Upload and view documents
+  - **Viewer**: View documents only
+- 📂 Document Upload, View & Delete
+- ☁️ Cloudinary File Storage
+- 🕒 Document Version History
+- 🔍 Search and Filter Documents
+- 📊 Angular Dashboard Interface
+- 🗄️ MongoDB Persistence via Mongoose
+
+---
+
+## 🛠️ Tech Stack & Version Details
+
+### Backend
+- Node.js: v18.x
+- Express.js: v4.x
+- MongoDB: v6.x
+- Mongoose: v7.x
+- JWT (jsonwebtoken): v9.x
+- Multer: v1.x
+- Cloudinary SDK: v1.x
+- Nodemon: v3.x
+
+### Frontend
+- Angular: v21.0.4
+- TypeScript: v5.x
+- Bootstrap: v5.x
+- RxJS: v7.x
+
+---
+
+## 📁 Project Structure
+DMS/
+│
+├── backend/
+│ ├── controllers/
+│ ├── middleware/
+│ ├── models/
+│ ├── routes/
+│ ├── utils/
+│ ├── .env.example
+│ └── server.js
+│
+├── frontend/
+│ ├── src/
+│ │ ├── app/
+│ │ ├── environments/
+│ │ └── assets/
+│ └── angular.json
+│
+└── README.md
+## 🔧 Backend Setup
+
+### 1️⃣ Navigate to backend directory
 ```bash
+cd backend
+2️⃣ Install dependencies
+bash
+Copy code
+npm install
+3️⃣ Configure environment variables
+Create a .env file inside the backend folder using the following format:
+
+env
+Copy code
+PORT=5000
+MONGO_URI=mongodb://localhost:27017/dms_db
+JWT_SECRET=your_jwt_secret_key
+CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
+CLOUDINARY_API_KEY=your_cloudinary_api_key
+CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+Start the backend server
+# Development mode
+npm run dev
+
+# OR production mode
+npm start
+
+
+The backend server will run at:
+
+http://localhost:5000
+Frontend Setup
+1️⃣ Navigate to frontend directory
+cd frontend
+
+2️⃣ Install dependencies
+npm install
+
+3️⃣ Configure API base URL
+
+Edit the file:
+
+frontend/src/environments/environment.ts
+
+export const environment = {
+  apiBaseUrl: 'http://localhost:5000/api'
+};
+
+4️⃣ Start the Angular application
 ng serve
-```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
-## Code scaffolding
+The frontend application will run at:
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+http://localhost:4200
+Authentication Flow
 
-```bash
-ng generate component component-name
-```
+Users register and log in using email and password
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+JWT token is generated upon successful login
 
-```bash
-ng generate --help
-```
+Token is stored in browser localStorage
 
-## Building
+Protected routes require the header:
 
-To build the project run:
+Authorization: Bearer <token>
 
-```bash
-ng build
-```
+📡 API Endpoints
+Authentication
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+POST /api/auth/register — Register a new user
 
-## Running unit tests
+POST /api/auth/login — Login and receive JWT token
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+Documents
 
-```bash
-ng test
-```
+POST /api/documents/upload — Upload or update document (Admin, Editor)
 
-## Running end-to-end tests
+GET /api/documents — List documents
 
-For end-to-end (e2e) testing, run:
+GET /api/documents/:id — Get document details
 
-```bash
-ng e2e
-```
+GET /api/documents/:id/history — Get document version history
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+DELETE /api/documents/:id — Delete document (Admin only)
 
-## Additional Resources
+🔐 Security Practices
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Passwords are hashed using bcrypt
+
+JWT-based authentication and authorization
+
+Role-based route protection
+
+Environment variables and secrets excluded from submission
+
+🧪 Testing
+
+Frontend unit tests can be executed using:
+
+cd frontend
+npm test
+
+📦 Submission Notes
+
+.env file is excluded for security reasons
+
+.env.example file is provided
+
+README includes complete local setup instructions and version details
+
+
+
+
