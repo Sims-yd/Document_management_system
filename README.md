@@ -80,3 +80,33 @@ App runs at `http://localhost:4200` (proxy API base URL if needed via Angular en
 - File uploads use Cloudinary via `multer-storage-cloudinary`; supported formats: jpg, png, pdf.
 - Versioning stores prior file URLs in `history` on title collisions during upload.
 - JWT Bearer tokens are required on protected routes via `Authorization: Bearer <token>`.
+
+## Screenshots
+
+### Login
+![Login](screenshots/login.png)
+
+### Register
+![Register](screenshots/Register.png)
+
+### Dashboard
+![Dashboard](screenshots/Dashboard.png)
+
+### Upload Page
+![Upload Page](screenshots/Upload%20page.png)
+
+### Document Uploaded
+![Document Uploaded](screenshots/Document_uploaded.png)
+
+### Uploaded Image
+![Uploaded Image](screenshots/uploaded_image.png)
+
+### Uploaded File
+![Uploaded File](screenshots/Uploaded_file.png)
+
+### All Document Created
+![All Document Created](screenshots/all_document_created.png)
+
+### Add Credentials
+![Add Credentials](screenshots/add_credentials.png)
+
